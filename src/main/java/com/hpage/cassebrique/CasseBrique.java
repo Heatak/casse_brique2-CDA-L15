@@ -1,20 +1,22 @@
-import models.Balle;
+package com.hpage.cassebrique;
+
+import com.hpage.cassebrique.models.Balle;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CasseBrique extends Canvas {
 
-    private int largeur = 500;
-    private int hauteur = 600;
+    public final static int LARGEUR = 500;
+    public final static int HAUTEUR = 600;
 
     public CasseBrique() throws InterruptedException {
         JFrame fenetre = new JFrame("Casse brique");
         //On récupère le panneau de la fenetre principale
         JPanel panneau = (JPanel) fenetre.getContentPane();
         //On définie la hauteur / largeur de l'écran
-        panneau.setPreferredSize(new Dimension(largeur, hauteur));
-        setBounds(0, 0, largeur, hauteur);
+        panneau.setPreferredSize(new Dimension(LARGEUR, HAUTEUR));
+        setBounds(0, 0, LARGEUR, HAUTEUR);
         //On ajoute cette classe (qui hérite de Canvas) comme composant du panneau principal
         panneau.add(this);
 
@@ -35,15 +37,15 @@ public class CasseBrique extends Canvas {
 
     public void demarrer() throws InterruptedException {
 
-        Balle[] tabBalle = new Balle[50];
+        Balle[] tabBalle = new Balle[100];
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
 
             int randTaille = (int) (Math.random() * 40 + 10);
-            int randX = (int) (Math.random() * (largeur - randTaille));
-            int randY = (int) (Math.random() * (hauteur - randTaille));
+            int randX = (int) (Math.random() * (LARGEUR - randTaille));
+            int randY = (int) (Math.random() * (HAUTEUR - randTaille));
 
-            tabBalle[i] = new Balle(randX, randY, randTaille, Color.BLUE);
+            tabBalle[i] = new Balle(randX, randY, randTaille, Color.lightGray);
         }
 
         while (true) {
@@ -51,11 +53,11 @@ public class CasseBrique extends Canvas {
             Graphics2D dessin = (Graphics2D) getBufferStrategy().getDrawGraphics();
 
             dessin.setColor(Color.white);
-            dessin.fillRect(0, 0, largeur, hauteur);
+            dessin.fillRect(0, 0, LARGEUR, HAUTEUR);
 
             for (Balle balle : tabBalle) {
                 balle.mouvement();
-                balle.collision(largeur, hauteur);
+                balle.collision();
                 balle.dessiner(dessin);
             }
 

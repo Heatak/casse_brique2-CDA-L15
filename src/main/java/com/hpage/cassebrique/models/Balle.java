@@ -1,4 +1,6 @@
-package models;
+package com.hpage.cassebrique.models;
+
+import com.hpage.cassebrique.CasseBrique;
 
 import java.awt.*;
 
@@ -22,14 +24,14 @@ public class Balle {
         posY += vitesseBalleY;
     }
 
-    public void collision(int largeurEcran, int hauteurEcran/*, Graphics2D dessinEcran*/) {
-        if (posX >= (largeurEcran - taille) || (posX <= 0)) {
+    public void collision() {
+        if (posX >= (CasseBrique.LARGEUR - taille) || (posX <= 0)) {
             vitesseBalleX *= -1;
             couleur = new Color((int)(Math.random() * 0x1000000));
 //            dessinEcran.setColor(couleur);
 //            dessinEcran.fillOval(posX, posY, 50, 50);
         }
-        if (posY >= (hauteurEcran - taille) || (posY <= 0)) {
+        if (posY >= (CasseBrique.HAUTEUR - taille) || (posY <= 0)) {
             vitesseBalleY *= -1;
             couleur = new Color((int)(Math.random() * 0x1000000));
 //            dessinEcran.setColor(couleur);
