@@ -4,19 +4,18 @@ import com.hpage.cassebrique.CasseBrique;
 
 import java.awt.*;
 
-public class Balle {
+import static com.hpage.cassebrique.CasseBrique.HAUTEUR;
+import static com.hpage.cassebrique.CasseBrique.barre;
 
-    protected int posX;
-    protected int posY;
-    protected int taille;
-    protected int vitesseBalleX = 5, vitesseBalleY = 5;
-    protected Color couleur;
+public class Balle extends Rond {
+    protected int vitesseBalleX = 4;
+    public int vitesseBalleY = 4;
 
-    public Balle(int posX, int posY, int taille, Color couleur) {
-        this.posX = posX;
-        this.posY = posY;
-        this.taille = taille;
-        this.couleur = couleur;
+
+    public Balle(int posX, int posY, Color couleur, int diametre, int vitesseBalleX, int vitesseBalleY) {
+        super(posX, posY, couleur, diametre);
+        this.vitesseBalleX = vitesseBalleX;
+        this.vitesseBalleY = vitesseBalleY;
     }
 
     public void mouvement() {
@@ -25,39 +24,45 @@ public class Balle {
     }
 
     public void collision() {
-        if (posX >= (CasseBrique.LARGEUR - taille) || (posX <= 0)) {
-            vitesseBalleX *= -1;
-            couleur = new Color((int)(Math.random() * 0x1000000));
-//            dessinEcran.setColor(couleur);
-//            dessinEcran.fillOval(posX, posY, 50, 50);
+
+        //si la balle est arrivée à droite ou à gauche alors on inverse sa vitesse
+        if(posX >= CasseBrique.LARGEUR - diametre || posX <= 0){
+            vitesseBalleX *= -1; //vitesseHorizontalBalle = vitesseHorizontalBalle * -1
+//            couleur = new Color((float)Math.random(),(float)Math.random(),(float)Math.random());
         }
-        if (posY >= (CasseBrique.HAUTEUR - taille) || (posY <= 0)) {
+
+        if(posY >= CasseBrique.HAUTEUR - diametre || posY <= 0){
             vitesseBalleY *= -1;
-            couleur = new Color((int)(Math.random() * 0x1000000));
-//            dessinEcran.setColor(couleur);
-//            dessinEcran.fillOval(posX, posY, 50, 50);
         }
-    }
+//        if ((this.posY >= barre.posY - this.diametre ) && (this.posX <= barre.getPosX() + barre.largeur) && (this.posX >= barre.posX - 25 )) {
+//            this.vitesseBalleY *= -1;
+//        }
+        boolean barreContacteX = barre.getPosX() + barre.getLargeur() > getPosX();
+        boolean barreContacteY = barre.getPosY() + barre.getLargeur() > getPosY();
+        boolean balleContacteX = getPosX() + getDiametre() > barre.getPosX();
+        boolean balleContacteY = getPosY() + getDiametre() > barre.getPosY();
+        if(barreContacteX && barreContacteY && balleContacteY && balleContacteX) {
+            this.vitesseBalleY *= -1;
+        }
+        boolean fondContacteY = HAUTEUR - 20 <= getPosY();
+        if (fondContacteY) {
+            detruire();
+            if(!CasseBrique.listeBalle.isEmpty()) return;
+            CasseBrique.pLabel.setVisible(true);
+//            System.out.println("Perdu");
 
-    public void dessiner(Graphics2D dessinEcran) {
-        dessinEcran.setColor(couleur);
-        dessinEcran.fillOval(posX, posY, taille, taille);
-    }
-
-    public int getPosX() {
-        return posX;
-    }
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
+            CasseBrique.lance = false;
+            CasseBrique.boutton.setVisible(true);
+            CasseBrique.boutton.addActionListener(e -> {
+                CasseBrique.dessin.dispose();
+                CasseBrique.fenetre.dispose();
+//                try {
+//                    JarLoader.loadJar(CasseBrique.path);
+//                } catch (Exception ex) {
+//                    throw new RuntimeException(ex);
+//                }
+            });
+        }
     }
 
     public int getVitesseBalleX() {
@@ -76,13 +81,8 @@ public class Balle {
         this.vitesseBalleY = vitesseBalleY;
     }
 
-    public Color getCouleur() {
-        return couleur;
+
+    public void detruire() {
+        CasseBrique.listeBalle.remove(this);
     }
-
-    public void setCouleur(Color couleur) {
-        this.couleur = couleur;
-    }
-
-
 }
