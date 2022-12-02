@@ -27,16 +27,12 @@ public class Balle extends Rond {
 
         //si la balle est arrivée à droite ou à gauche alors on inverse sa vitesse
         if(posX >= CasseBrique.LARGEUR - diametre || posX <= 0){
-            vitesseBalleX *= -1; //vitesseHorizontalBalle = vitesseHorizontalBalle * -1
-//            couleur = new Color((float)Math.random(),(float)Math.random(),(float)Math.random());
+            vitesseBalleX *= -1;
         }
 
         if(posY >= CasseBrique.HAUTEUR - diametre || posY <= 0){
             vitesseBalleY *= -1;
         }
-//        if ((this.posY >= barre.posY - this.diametre ) && (this.posX <= barre.getPosX() + barre.largeur) && (this.posX >= barre.posX - 25 )) {
-//            this.vitesseBalleY *= -1;
-//        }
         boolean barreContacteX = barre.getPosX() + barre.getLargeur() > getPosX();
         boolean barreContacteY = barre.getPosY() + barre.getLargeur() > getPosY();
         boolean balleContacteX = getPosX() + getDiametre() > barre.getPosX();
@@ -49,18 +45,10 @@ public class Balle extends Rond {
             detruire();
             if(!CasseBrique.listeBalle.isEmpty()) return;
             CasseBrique.pLabel.setVisible(true);
-//            System.out.println("Perdu");
-
-//            CasseBrique.lance = false;
             CasseBrique.boutton.setVisible(true);
             CasseBrique.boutton.addActionListener(e -> {
                 CasseBrique.dessin.dispose();
                 CasseBrique.fenetre.dispose();
-//                try {
-//                    JarLoader.loadJar(CasseBrique.path);
-//                } catch (Exception ex) {
-//                    throw new RuntimeException(ex);
-//                }
             });
         }
     }

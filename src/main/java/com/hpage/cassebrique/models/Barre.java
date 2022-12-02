@@ -11,7 +11,7 @@ public class Barre extends Rectangle {
     }
 
     public void deplacementDroit() {
-        if (posX <= CasseBrique.LARGEUR - 105) {
+        if (posX <= CasseBrique.LARGEUR - largeur) {
             setPosX(posX+=10);
         }
 
