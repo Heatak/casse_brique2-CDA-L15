@@ -104,17 +104,10 @@ public class CasseBrique extends Canvas implements KeyListener {
                     continue;
             }
             for (int j = 1; j * 60 < HAUTEUR - 250; j++) {
-                int randomRole = ThreadLocalRandom.current().nextInt(0, 3);
-                bonus.setRole(randomRole);
-
 //                System.out.println(randomRole);
                 listeBrique.add(new Brique(i * 55, j * 55, new Color((float)Math.random(),(float)Math.random(),(float)Math.random()), 50, 30, false));
-                listeBonus.add(new Bonus( i * 55, j * 55, new Color(255, 255, 255), 15, bonus.getRole()));
-
             }
         }
-
-
 
         while (true) {
 
@@ -135,15 +128,11 @@ public class CasseBrique extends Canvas implements KeyListener {
                 balle.dessiner(dessin);
             }
 
-
             for (Bonus bonus: new ArrayList<>(listeBonus)
                 ) {
                     bonus.collisionBonus();
-                    //bonus.mouvementBonus();
+                    bonus.mouvementBonus();
                 }
-
-
-
 
             barre.dessiner(dessin);
 
@@ -189,11 +178,11 @@ public class CasseBrique extends Canvas implements KeyListener {
         if(briqueContacteX && briqueContacteY && balleContacteY && balleContacteX) {
             brique.detruite();
             brique.setCasse(true);
-//            System.out.println(brique.isCasse());
-            if (brique.isCasse()) {
-                bonus.mouvementBonus();
-            }
+            int randomRole = ThreadLocalRandom.current().nextInt(0, 3);
+            bonus.setRole(randomRole);
+            listeBonus.add(new Bonus( brique.getPosX(), brique.getPosY(), new Color(255, 255, 255), 15, bonus.getRole()));bonus.mouvementBonus();
 
+//            System.out.println(brique.isCasse());
             if (listeBrique.isEmpty()){
                 System.out.println("Partie Terminée");
                 balle.detruire();
@@ -202,6 +191,7 @@ public class CasseBrique extends Canvas implements KeyListener {
                     fenetre.dispose();
                 });
                 labelVictoire.setVisible(true);
+
             }
             score+=100;
             label.setText("Score: " + score);
