@@ -51,7 +51,7 @@ public class Balle extends Rond {
             CasseBrique.pLabel.setVisible(true);
 //            System.out.println("Perdu");
 
-            CasseBrique.lance = false;
+//            CasseBrique.lance = false;
             CasseBrique.boutton.setVisible(true);
             CasseBrique.boutton.addActionListener(e -> {
                 CasseBrique.dessin.dispose();
