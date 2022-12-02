@@ -8,7 +8,7 @@ import static com.hpage.cassebrique.CasseBrique.*;
 
 public class Bonus extends Rond {
 
-    protected int vitesseBonusY = 1;
+    protected int vitesseBonusY = 3;
 
     protected int role = 0;
 

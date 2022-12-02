@@ -26,7 +26,6 @@ public class CasseBrique extends Canvas implements KeyListener {
     public static Barre barre = new Barre(225, 540, Color.BLACK, largeur, 10);
 
     public static ArrayList<Brique> listeBrique = new ArrayList<>();
-//            new Brique(225, 100, Color.red, 50, 30);
 
     public static ArrayList<Bonus> listeBonus = new ArrayList<>();
 
@@ -73,6 +72,7 @@ public class CasseBrique extends Canvas implements KeyListener {
         boutton.setBounds(175, 420, 125, 40);
         boutton.setVisible(false);
         panneau.add(boutton);
+
         //On ajoute cette classe (qui hérite de Canvas) comme composant du panneau principal
 
         panneau.add(this);
@@ -170,35 +170,24 @@ public class CasseBrique extends Canvas implements KeyListener {
 
     public void collision(Balle balle) {
          for (Brique brique : new ArrayList<>(listeBrique)) {
+            boolean briqueContacteX = brique.getPosX() + brique.getLargeur() > balle.getPosX();
+            boolean briqueContacteY = brique.getPosY() + brique.getLargeur() > balle.getPosY();
+            boolean balleContacteX = balle.getPosX() + balle.getDiametre() > brique.getPosX();
+            boolean balleContacteY = balle.getPosY() + balle.getDiametre() > brique.getPosY();
+            if(briqueContacteX && briqueContacteY && balleContacteY && balleContacteX) {
+                brique.detruite();
+                brique.setCasse(true);
+                int randomRole = ThreadLocalRandom.current().nextInt(0, 3);
+                bonus.setRole(randomRole);
+                listeBonus.add(new Bonus( brique.getPosX(), brique.getPosY(), new Color(255, 255, 255), 15, bonus.getRole()));
 
-        boolean briqueContacteX = brique.getPosX() + brique.getLargeur() > balle.getPosX();
-        boolean briqueContacteY = brique.getPosY() + brique.getLargeur() > balle.getPosY();
-        boolean balleContacteX = balle.getPosX() + balle.getDiametre() > brique.getPosX();
-        boolean balleContacteY = balle.getPosY() + balle.getDiametre() > brique.getPosY();
-        if(briqueContacteX && briqueContacteY && balleContacteY && balleContacteX) {
-            brique.detruite();
-            brique.setCasse(true);
-            int randomRole = ThreadLocalRandom.current().nextInt(0, 3);
-            bonus.setRole(randomRole);
-            listeBonus.add(new Bonus( brique.getPosX(), brique.getPosY(), new Color(255, 255, 255), 15, bonus.getRole()));bonus.mouvementBonus();
+                score+=100;
+                label.setText("Score: " + score);
+                balle.setVitesseBalleY(balle.getVitesseBalleY() * -1);
 
-//            System.out.println(brique.isCasse());
-            if (listeBrique.isEmpty()){
-                System.out.println("Partie Terminée");
-                balle.detruire();
-                boutton.setVisible(true);
-                boutton.addActionListener(e -> {
-                    fenetre.dispose();
-                });
-                labelVictoire.setVisible(true);
-
+                break;
             }
-            score+=100;
-            label.setText("Score: " + score);
-            balle.setVitesseBalleY(balle.getVitesseBalleY() * -1);
 
-            break;
-        }
         }
 
     }
